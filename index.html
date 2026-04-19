@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Анкета для программы тренировок</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f6f2eb;
+      --bg-accent: #e8e2d6;
+      --ink: #1c1b19;
+      --muted: #5c574f;
+      --line: #c9c2b5;
+      --brand: #2a6f5b;
+      --brand-dark: #1f5345;
+      --accent: #c45c3e;
+      --ok: #2a6f5b;
+      --err: #a33b2a;
+      --radius: 14px;
+      --shadow: 0 18px 50px rgba(28, 27, 25, 0.08);
+      --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+      --font-body: "IBM Plex Sans", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(42, 111, 91, 0.12), transparent 55%),
+        radial-gradient(900px 500px at 110% 0%, rgba(196, 92, 62, 0.1), transparent 50%),
+        var(--bg);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    header {
+      margin-bottom: 2rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--brand);
+      background: rgba(42, 111, 91, 0.12);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      line-height: 1.15;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .lede {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    form {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      box-shadow: var(--shadow);
+      padding: 1.75rem 1.5rem 2rem;
+    }
+
+    @media (min-width: 640px) {
+      form {
+        padding: 2rem 2.25rem 2.5rem;
+      }
+    }
+
+    fieldset {
+      border: none;
+      margin: 0 0 1.75rem;
+      padding: 0;
+    }
+
+    fieldset:last-of-type {
+      margin-bottom: 1.25rem;
+    }
+
+    legend {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 0;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      width: 100%;
+      border-bottom: 2px solid var(--bg-accent);
+      padding-bottom: 0.5rem;
+    }
+
+    .hint {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: -0.35rem 0 1rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 560px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      font-size: 0.92rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .optional {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(42, 111, 91, 0.2);
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .checks,
+    .radios {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .check,
+    .radio {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .check input,
+    .radio input {
+      margin-top: 0.2rem;
+      accent-color: var(--brand);
+      width: 1.05rem;
+      height: 1.05rem;
+    }
+
+    .inline-radios {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+    }
+
+    .inline-radios .radio {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    button[type="submit"] {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.85rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-dark));
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(42, 111, 91, 0.35);
+      transition: transform 0.12s, filter 0.12s;
+    }
+
+    button[type="submit"]:hover:not(:disabled) {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    button[type="submit"]:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      font-size: 0.95rem;
+      min-height: 1.4em;
+    }
+
+    .status.ok {
+      color: var(--ok);
+      font-weight: 600;
+    }
+
+    .status.err {
+      color: var(--err);
+      font-weight: 500;
+    }
+
+    footer.note {
+      margin-top: 1.75rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .heart {
+      color: var(--accent);
+    }
+
+    .config-warn {
+      background: #fff7ed;
+      border: 1px solid #f6d6a8;
+      color: #7a4a12;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="badge">Фитнес · персональная программа</div>
+      <h1>Анкета для составления программы тренировок</h1>
+      <p class="lede">
+        Пожалуйста, заполните анкету максимально подробно — это поможет составить для вас безопасную и эффективную программу тренировок.
+        Если есть медицинские диагнозы, их лучше обсудить при личной встрече.
+      </p>
+    </header>
+
+    <div id="configWarn" class="config-warn" hidden>
+      Укажите URL веб-приложения Google Apps Script в константе <code>WEB_APP_URL</code> внизу файла перед деплоем на GitHub Pages.
+    </div>
+
+    <form id="fitnessForm" novalidate>
+      <fieldset>
+        <legend>1. Основная информация</legend>
+        <div class="grid grid-2">
+          <div>
+            <label for="name">Имя <span class="optional">*</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div>
+            <label for="age">Возраст</label>
+            <input id="age" name="age" type="number" min="10" max="100" inputmode="numeric" />
+          </div>
+          <div>
+            <label for="heightCm">Рост (см)</label>
+            <input id="heightCm" name="heightCm" type="number" min="120" max="230" inputmode="numeric" />
+          </div>
+          <div>
+            <label for="weightKg">Вес (кг)</label>
+            <input id="weightKg" name="weightKg" type="number" min="30" max="250" step="0.1" inputmode="decimal" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Цели</legend>
+        <p class="hint">Отметьте всё, что относится к вашей основной цели сейчас.</p>
+        <div class="checks">
+          <label class="check"><input type="checkbox" name="goal_weight_loss" value="yes" /> Снижение веса (за счёт жирового компонента)</label>
+          <label class="check"><input type="checkbox" name="goal_muscle" value="yes" /> Увеличение мышечной массы</label>
+          <label class="check"><input type="checkbox" name="goal_recomp" value="yes" /> Улучшение качества тела</label>
+          <label class="check"><input type="checkbox" name="goal_endurance" value="yes" /> Развитие выносливости</label>
+        </div>
+        <div style="margin-top: 1rem">
+          <label for="focusAreas">На какие части тела сделать акцент в первую очередь?</label>
+          <p class="hint">Например: ягодицы, ноги, спина, руки и т.д.</p>
+          <textarea id="focusAreas" name="focusAreas" placeholder="Опишите коротко приоритетные зоны"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Физическое состояние</legend>
+        <div class="grid">
+          <div>
+            <label>Дискомфорт в суставах при движениях? (плечи / тазобедренные / колени)</label>
+            <div class="inline-radios">
+              <label class="radio"><input type="radio" name="joint_discomfort" value="yes" /> Да</label>
+              <label class="radio"><input type="radio" name="joint_discomfort" value="no" /> Нет</label>
+            </div>
+          </div>
+          <div>
+            <label>Нарушения осанки? (шейный отдел, плечи, грудной кифоз, поясничный лордоз)</label>
+            <div class="inline-radios">
+              <label class="radio"><input type="radio" name="posture_issues" value="yes" /> Да</label>
+              <label class="radio"><input type="radio" name="posture_issues" value="no" /> Нет</label>
+            </div>
+          </div>
+          <div>
+            <label>Есть ли диастаз?</label>
+            <div class="inline-radios">
+              <label class="radio"><input type="radio" name="diastasis" value="yes" /> Да</label>
+              <label class="radio"><input type="radio" name="diastasis" value="no" /> Нет</label>
+            </div>
+          </div>
+          <div>
+            <label>Есть ли шрамы?</label>
+            <div class="inline-radios">
+              <label class="radio"><input type="radio" name="scars" value="yes" /> Да</label>
+              <label class="radio"><input type="radio" name="scars" value="no" /> Нет</label>
+            </div>
+          </div>
+          <div>
+            <label>Есть ли варикозное расширение вен?</label>
+            <div class="inline-radios">
+              <label class="radio"><input type="radio" name="varicose" value="yes" /> Да</label>
+              <label class="radio"><input type="radio" name="varicose" value="no" /> Нет</label>
+            </div>
+          </div>
+          <div>
+            <label for="enduranceLevel">Уровень выносливости (0–10)</label>
+            <input id="enduranceLevel" name="enduranceLevel" type="number" min="0" max="10" inputmode="numeric" placeholder="Например: 5" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Бытовая физическая активность</legend>
+        <div class="radios">
+          <label class="radio"><input type="radio" name="daily_activity" value="low" required /> Низкая (сидячая работа, &lt;5000 шагов)</label>
+          <label class="radio"><input type="radio" name="daily_activity" value="medium" /> Средняя (2–3 тренировки, ~10000 шагов)</label>
+          <label class="radio"><input type="radio" name="daily_activity" value="high" /> Высокая (регулярные тренировки, активный образ жизни)</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Опыт тренировок</legend>
+        <label for="trainingExperience">Есть ли опыт тренировок? Если да — какой?</label>
+        <textarea id="trainingExperience" name="trainingExperience" placeholder="Зал, дом, групповые, как давно, любимые форматы…"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>6. Организация тренировок</legend>
+        <p class="hint">Где планируете заниматься?</p>
+        <div class="checks">
+          <label class="check"><input type="checkbox" name="location_home" value="yes" /> Дом</label>
+          <label class="check"><input type="checkbox" name="location_gym" value="yes" /> Зал</label>
+        </div>
+        <div style="margin-top: 1rem">
+          <label for="homeEquipment">Если дома — какое оборудование есть?</label>
+          <textarea id="homeEquipment" name="homeEquipment" placeholder="Гантели, резинки, турник, скамья…"></textarea>
+        </div>
+        <div class="grid grid-2" style="margin-top: 1rem">
+          <div>
+            <label for="strengthPerWeek">Силовых тренировок в неделю (готовы)</label>
+            <input id="strengthPerWeek" name="strengthPerWeek" type="number" min="0" max="14" inputmode="numeric" />
+          </div>
+          <div>
+            <label for="cardioPerWeek">Кардио в неделю (готовы)</label>
+            <input id="cardioPerWeek" name="cardioPerWeek" type="number" min="0" max="14" inputmode="numeric" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>7. Питание</legend>
+        <div class="grid">
+          <div>
+            <label>Соблюдаете ли режим питания?</label>
+            <div class="inline-radios">
+              <label class="radio"><input type="radio" name="nutrition_regime" value="yes" /> Да</label>
+              <label class="radio"><input type="radio" name="nutrition_regime" value="no" /> Нет</label>
+            </div>
+          </div>
+          <div>
+            <label>Есть ли сейчас диета?</label>
+            <div class="inline-radios">
+              <label class="radio"><input type="radio" name="nutrition_diet" value="yes" /> Да</label>
+              <label class="radio"><input type="radio" name="nutrition_diet" value="no" /> Нет</label>
+            </div>
+          </div>
+          <div>
+            <label>Готовы менять питание при необходимости?</label>
+            <div class="inline-radios">
+              <label class="radio"><input type="radio" name="nutrition_willing_change" value="yes" /> Да</label>
+              <label class="radio"><input type="radio" name="nutrition_willing_change" value="no" /> Нет</label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>8. Сон</legend>
+        <label for="sleepHours">Сколько часов спите в среднем?</label>
+        <input id="sleepHours" name="sleepHours" type="text" inputmode="decimal" placeholder="Например: 7 или 6.5" />
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" id="submitBtn">Отправить анкету</button>
+        <span class="status" id="status" role="status" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <footer class="note">
+      Спасибо за заполнение <span class="heart">💛</span><br />
+      Это важный шаг к вашим целям и улучшению формы тела.
+    </footer>
+  </div>
+
+  <script>
+    /**
+     * Вставьте URL деплоя веб-приложения (Web app) Apps Script.
+     * Пример: https://script.google.com/macros/s/XXXX/exec
+     */
+    const WEB_APP_URL = "";
+
+    const form = document.getElementById("fitnessForm");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submitBtn");
+    const configWarn = document.getElementById("configWarn");
+
+    if (!WEB_APP_URL) {
+      configWarn.hidden = false;
+    }
+
+    function ynFromRadio(name) {
+      const el = form.elements.namedItem(name);
+      if (!el) return "";
+      const checked = form.querySelector(`input[name="${name}"]:checked`);
+      if (!checked) return "";
+      return checked.value === "yes" ? "Да" : checked.value === "no" ? "Нет" : checked.value;
+    }
+
+    /** Для чекбоксов: только «Да» или пусто (пусто = не отмечено). */
+    function checkedDa(name) {
+      const el = form.elements.namedItem(name);
+      return el && el.checked ? "Да" : "";
+    }
+
+    function buildPayload() {
+      const fd = new FormData(form);
+      return {
+        form_version: "fitness_intake_v1",
+        name: (fd.get("name") || "").toString().trim(),
+        age: (fd.get("age") || "").toString().trim(),
+        height_cm: (fd.get("heightCm") || "").toString().trim(),
+        weight_kg: (fd.get("weightKg") || "").toString().trim(),
+        goal_weight_loss: checkedDa("goal_weight_loss"),
+        goal_muscle: checkedDa("goal_muscle"),
+        goal_recomp: checkedDa("goal_recomp"),
+        goal_endurance: checkedDa("goal_endurance"),
+        focus_areas: (fd.get("focusAreas") || "").toString().trim(),
+        joint_discomfort: ynFromRadio("joint_discomfort"),
+        posture_issues: ynFromRadio("posture_issues"),
+        diastasis: ynFromRadio("diastasis"),
+        scars: ynFromRadio("scars"),
+        varicose: ynFromRadio("varicose"),
+        endurance_level: (fd.get("enduranceLevel") || "").toString().trim(),
+        daily_activity: (() => {
+          const r = form.querySelector('input[name="daily_activity"]:checked');
+          if (!r) return "";
+          const map = { low: "Низкая", medium: "Средняя", high: "Высокая" };
+          return map[r.value] || r.value;
+        })(),
+        training_experience: (fd.get("trainingExperience") || "").toString().trim(),
+        location_home: checkedDa("location_home"),
+        location_gym: checkedDa("location_gym"),
+        home_equipment: (fd.get("homeEquipment") || "").toString().trim(),
+        strength_per_week: (fd.get("strengthPerWeek") || "").toString().trim(),
+        cardio_per_week: (fd.get("cardioPerWeek") || "").toString().trim(),
+        nutrition_regime: ynFromRadio("nutrition_regime"),
+        nutrition_diet: ynFromRadio("nutrition_diet"),
+        nutrition_willing_change: ynFromRadio("nutrition_willing_change"),
+        sleep_hours: (fd.get("sleepHours") || "").toString().trim(),
+      };
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      statusEl.textContent = "";
+      statusEl.className = "status";
+
+      if (!WEB_APP_URL) {
+        statusEl.textContent = "Не настроен WEB_APP_URL.";
+        statusEl.classList.add("err");
+        return;
+      }
+
+      if (!form.reportValidity()) return;
+
+      const payload = buildPayload();
+      submitBtn.disabled = true;
+      statusEl.textContent = "Отправка…";
+
+      try {
+        const res = await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        });
+
+        const text = await res.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = null;
+        }
+
+        if (!res.ok) {
+          throw new Error(data && data.message ? data.message : `HTTP ${res.status}`);
+        }
+
+        if (data && data.status === "error") {
+          throw new Error(data.message || "Ошибка сервера");
+        }
+
+        statusEl.textContent = "Спасибо! Анкета отправлена.";
+        statusEl.classList.add("ok");
+        form.reset();
+      } catch (err) {
+        statusEl.textContent =
+          "Не удалось отправить. Проверьте URL веб-приложения, права доступа «Anyone» и CORS. Детали: " +
+          (err && err.message ? err.message : err);
+        statusEl.classList.add("err");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
